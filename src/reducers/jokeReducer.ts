@@ -1,4 +1,6 @@
+import { FAVORITES_STORAGE_KEY } from "../consts"
 import { Joke } from "../models/Joke"
+import { ReducerState } from "../models/ReducerState"
 
 export enum ActionTypes {
   INIT = 'init',
@@ -6,25 +8,33 @@ export enum ActionTypes {
   FAVORITE = 'favorite'
 }
 
-export interface IAction {
+export interface Action {
   type: ActionTypes
   payload: Joke
 }
 
-export const reducer = (state: Joke[], action: IAction) => {
+export const reducer = (state: ReducerState, action: Action): ReducerState => {
   const MAX_JOKES = 10
 
   switch (action.type) {
     case 'init':
-      return state.length
+      return state.jokes.length
         ? state
-        : [action.payload]
-    case 'add':
-      return state.length === MAX_JOKES
-        ? [action.payload, ...state.slice(0, MAX_JOKES - 1)]
-        : [action.payload, ...state]
-    case 'favorite':
-      return state.map(joke => {
+        : {
+          ...state,
+          jokes: [action.payload]
+        }
+    case 'add': {
+      const jokes = state.jokes.length === MAX_JOKES
+        ? [action.payload, ...state.jokes.slice(0, MAX_JOKES - 1)]
+        : [action.payload, ...state.jokes]
+      return {
+        ...state,
+        jokes
+      }
+    }
+    case 'favorite': {
+      const updatedJokes = state.jokes.map(joke => {
         if (joke.id === action.payload.id) {
           return {
             ...joke,
@@ -34,6 +44,20 @@ export const reducer = (state: Joke[], action: IAction) => {
 
         return joke
       })
+
+      const favorites = updatedJokes.filter(joke => joke.isFavorite)
+
+      localStorage.setItem(
+        FAVORITES_STORAGE_KEY,
+        JSON.stringify(favorites)
+      )
+
+      return {
+        ...state,
+        jokes: updatedJokes,
+        favorites
+      }
+    }
     default:
       return state
   }
