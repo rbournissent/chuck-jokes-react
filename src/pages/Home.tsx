@@ -21,15 +21,18 @@ const Home = () => {
       getNewJoke().then(joke => {
         dispatch({ type: ActionTypes.INIT, payload: joke })
       })
-      .catch(() => setError('Failed to fetch joke'))
+      .catch(() => setError('Failed to fetch the joke'))
 
     })()
   }, [])
 
   useEffect(() => {
     // Start interval
-    const id = window.setInterval(async () => {
-      dispatch({ type: ActionTypes.ADD, payload: await getNewJoke() })
+    const id = window.setInterval(() => {
+      getNewJoke().then(joke => {
+        dispatch({ type: ActionTypes.ADD, payload: joke })
+      })
+      .catch(() => setError('Failed to fetch a new joke'))
     }, JOKE_INTERVAL_TIME)
 
     return () => {
