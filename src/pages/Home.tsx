@@ -1,14 +1,15 @@
-import { useEffect, useReducer, useState } from "react"
+import { useEffect, useState } from "react"
 
 import { Joke } from "../models/Joke"
-import { ActionTypes, reducer } from "../reducers/jokeReducer"
+import { ActionTypes } from "../reducers/jokeReducer"
 import { getNewJoke } from "../api"
 
 import JokeCard from "../components/JokeCard"
+import { useJokesContext } from "../context/JokesContext"
 
 const Home = () => {
   const JOKE_INTERVAL_TIME = 5000
-  const [jokes, dispatch] = useReducer(reducer, [])
+  const { jokes, dispatch } = useJokesContext()
   const [error, setError] = useState('')
 
   const toggleFavorite = (joke: Joke) => {
@@ -24,7 +25,7 @@ const Home = () => {
       .catch(() => setError('Failed to fetch the joke'))
 
     })()
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     // Start interval
@@ -38,7 +39,7 @@ const Home = () => {
     return () => {
       window.clearInterval(id)
     }
-  }, [])
+  }, [dispatch])
 
 
   return (
