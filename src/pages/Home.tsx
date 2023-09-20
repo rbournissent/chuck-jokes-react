@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useReducer, useState } from "react"
+import { useEffect, useReducer, useState } from "react"
 
 import { Joke } from "../models/Joke"
-import { JokeRes } from "../models/JokeRes"
 import { ActionTypes, reducer } from "../reducers/jokeReducer"
+import { getNewJoke } from "../api"
 
 import JokeCard from "../components/JokeCard"
 
@@ -15,19 +15,6 @@ const Home = () => {
     dispatch({ type: ActionTypes.FAVORITE, payload: joke })
   }
 
-  const getNewJoke = useCallback(async ():Promise<Joke> => {
-    const joke:JokeRes = await fetch('https://api.chucknorris.io/jokes/random')
-      .then(response => response.json() as Promise<JokeRes>)
-
-    const newJoke = {
-      id: joke.id,
-      text: joke.value,
-      isFavorite: false
-    }
-
-    return newJoke
-  }, [])
-
   useEffect(() => {
     (() => {
       // Get first joke
@@ -37,7 +24,7 @@ const Home = () => {
       .catch(() => setError('Failed to fetch joke'))
 
     })()
-  }, [getNewJoke])
+  }, [])
 
   useEffect(() => {
     // Start interval
@@ -48,7 +35,7 @@ const Home = () => {
     return () => {
       window.clearInterval(id)
     }
-  }, [getNewJoke])
+  }, [])
 
 
   return (
