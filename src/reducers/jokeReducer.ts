@@ -17,23 +17,24 @@ export const reducer = (state: ReducerState, action: Action): ReducerState => {
   const MAX_JOKES = 10
 
   switch (action.type) {
-    case 'init':
+    case ActionTypes.INIT:
       return state.jokes.length
         ? state
         : {
           ...state,
           jokes: [action.payload]
         }
-    case 'add': {
+    case ActionTypes.ADD: {
       const jokes = state.jokes.length === MAX_JOKES
         ? [action.payload, ...state.jokes.slice(0, MAX_JOKES - 1)]
         : [action.payload, ...state.jokes]
+
       return {
         ...state,
         jokes
       }
     }
-    case 'favorite': {
+    case ActionTypes.FAVORITE: {
       const updatedJokes = state.jokes.map(joke => {
         if (joke.id === action.payload.id) {
           return {
