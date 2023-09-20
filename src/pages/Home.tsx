@@ -19,13 +19,14 @@ const Home = () => {
   useEffect(() => {
     (() => {
       // Get first joke
-      getNewJoke().then(joke => {
-        dispatch({ type: ActionTypes.INIT, payload: joke })
-      })
-      .catch(() => setError('Failed to fetch the joke'))
-
+      if (!jokes.length) {
+        getNewJoke().then(joke => {
+          dispatch({ type: ActionTypes.INIT, payload: joke })
+        })
+        .catch(() => setError('Failed to fetch the joke'))
+      }
     })()
-  }, [dispatch])
+  }, [dispatch, jokes.length])
 
   useEffect(() => {
     // Start interval
