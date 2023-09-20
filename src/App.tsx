@@ -1,20 +1,12 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
-
 import Header from './components/Header'
-import Home from './pages/Home'
-import Favorites from './pages/Favorites'
-
-const router = createBrowserRouter([
-  { path: '/', element: <Home /> },
-  { path: '/favorites', element: <Favorites /> },
-])
+import AppRouter from './AppRouter'
 
 function App() {
   return (
     <>
       <Header />
-      <RouterProvider router={router}/>
+      <AppRouter />
     </>
   )
 }
