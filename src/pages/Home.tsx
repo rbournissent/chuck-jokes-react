@@ -1,46 +1,10 @@
 import { useCallback, useEffect, useReducer, useState } from "react"
+
 import { Joke } from "../models/Joke"
-import JokeCard from "../components/JokeCard"
 import { JokeRes } from "../models/JokeRes"
+import { ActionTypes, reducer } from "../reducers/jokeReducer"
 
-enum ActionTypes {
-  INIT = 'init',
-  ADD = 'add',
-  FAVORITE = 'favorite'
-}
-
-interface IAction {
-  type: ActionTypes
-  payload: Joke
-}
-
-const reducer = (state: Joke[], action: IAction) => {
-  const MAX_JOKES = 10
-
-  switch (action.type) {
-    case 'init':
-      return state.length
-        ? state
-        : [action.payload]
-    case 'add':
-      return state.length === MAX_JOKES
-        ? [action.payload, ...state.slice(0, MAX_JOKES - 1)]
-        : [action.payload, ...state]
-    case 'favorite':
-      return state.map(joke => {
-        if (joke.id === action.payload.id) {
-          return {
-            ...joke,
-            isFavorite: !joke.isFavorite
-          }
-        }
-
-        return joke
-      })
-    default:
-      return state
-  }
-}
+import JokeCard from "../components/JokeCard"
 
 const Home = () => {
   const JOKE_INTERVAL_TIME = 5000
