@@ -1,10 +1,10 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createHashRouter, RouterProvider } from 'react-router-dom'
 
 import Root from './pages/Root'
 import Home from './pages/Home'
 import Favorites from './pages/Favorites'
 
-const router = createBrowserRouter([{
+const router = createHashRouter([{
    path: '/',
    element: <Root />,
    children: [{
