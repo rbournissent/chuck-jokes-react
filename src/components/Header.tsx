@@ -22,13 +22,15 @@ const Header = (): JSX.Element => {
             <NavLink to={'/favorites'}
               className='relative group'>
               <IconHeart />
-              { favorites.length &&
-                <span className='absolute bottom-0 right-0 text-[10px]/[16px] bg-red-600 w-4 h-4 text-center rounded-md text-white'>
+              { favorites.length
+                ? <span className='absolute bottom-0 right-0 text-[10px]/[16px] bg-red-600 w-4 h-4 text-center rounded-md text-white'>
                   { favorites.length }
-                </span> }
-                <span className='opacity-0 transition-opacity absolute top-full right-0 mt-2 rounded-md bg-slate-800 text-white p-2 whitespace-nowrap group-hover:opacity-100 pointer-events-none'>
-                  My Favorites
                 </span>
+                : ''
+              }
+              <span className='opacity-0 transition-opacity absolute top-full right-0 mt-2 rounded-md bg-slate-800 text-white p-2 whitespace-nowrap group-hover:opacity-100 pointer-events-none'>
+                My Favorites
+              </span>
             </NavLink>
           </li>
         </ul>
