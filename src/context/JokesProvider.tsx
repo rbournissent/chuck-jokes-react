@@ -22,7 +22,7 @@ const JokesProvider = ({ children }: JokesProviderProps) => {
   const [state, dispatch] = useReducer(reducer, {
     favorites: favorites,
     jokes: [],
-    intervalEnabled: false
+    intervalEnabled: true
   })
 
   const jokesState: JokesState = {
