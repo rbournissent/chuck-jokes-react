@@ -26,6 +26,7 @@ export const reducer = (state: ReducerState, action: Action): ReducerState => {
         }
     case ActionTypes.ADD: {
       const jokes = state.jokes.length === MAX_JOKES
+        // Remove last joke to keep the list up to the max
         ? [action.payload, ...state.jokes.slice(0, MAX_JOKES - 1)]
         : [action.payload, ...state.jokes]
 
@@ -35,28 +36,39 @@ export const reducer = (state: ReducerState, action: Action): ReducerState => {
       }
     }
     case ActionTypes.FAVORITE: {
+      const updatedJoke = {
+        ...action.payload,
+        isFavorite: !action.payload.isFavorite
+      }
+
+      // Update joke in the jokes list
       const updatedJokes = state.jokes.map(joke => {
         if (joke.id === action.payload.id) {
-          return {
-            ...joke,
-            isFavorite: !joke.isFavorite
-          }
+          return updatedJoke
         }
 
         return joke
       })
 
-      const favorites = updatedJokes.filter(joke => joke.isFavorite)
+      const updatedFavorites = updatedJoke.isFavorite
+        // Add joke to the list
+        ? [
+          ...state.favorites,
+          updatedJoke
+        ]
+        // Remove joke from the list
+        : state.favorites.filter(joke => joke.id !== updatedJoke.id)
 
+      // Update the favorites in localStorage
       localStorage.setItem(
         FAVORITES_STORAGE_KEY,
-        JSON.stringify(favorites)
+        JSON.stringify(updatedFavorites)
       )
 
       return {
         ...state,
         jokes: updatedJokes,
-        favorites
+        favorites: updatedFavorites
       }
     }
     default:
