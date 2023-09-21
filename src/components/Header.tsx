@@ -1,7 +1,10 @@
 import { NavLink } from "react-router-dom"
 import { APP_SLOGAN, APP_TITLE } from "../consts"
+import { useJokesContext } from "../context/JokesContext"
 
 const Header = (): JSX.Element => {
+  const { favorites } = useJokesContext()
+
   return (
     <header className='fixed top-0 left-0 w-full bg-slate-200'>
       <nav className='p-2'>
@@ -17,6 +20,10 @@ const Header = (): JSX.Element => {
           <li>
             <NavLink to={'/favorites'}>
               Favorites
+              { favorites.length &&
+                <span className="ml-1">
+                  ({ favorites.length })
+                </span> }
             </NavLink>
           </li>
         </ul>
