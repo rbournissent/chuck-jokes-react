@@ -9,9 +9,8 @@ import { useJokesContext } from "../context/JokesContext"
 
 const Home = () => {
   const JOKE_INTERVAL_TIME = 5 // seconds
-  const { jokes, dispatch } = useJokesContext()
+  const { jokes, intervalEnabled, dispatch } = useJokesContext()
   const [error, setError] = useState<string>('')
-  const [intervalEnabled, setIntervalEnabled] = useState<boolean>(true)
   const [countdown, setCountdown] = useState<number>(JOKE_INTERVAL_TIME)
 
   const toggleFavorite = (joke: Joke) => {
@@ -25,7 +24,7 @@ const Home = () => {
   }, [intervalEnabled, countdown])
 
   const toggleInterval = () => {
-    setIntervalEnabled(!intervalEnabled)
+    dispatch({ type: ActionTypes.TOGGLE_INTERVAL })
   }
 
   useEffect(() => {

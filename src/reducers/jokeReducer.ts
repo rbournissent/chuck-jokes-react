@@ -5,12 +5,13 @@ import { ReducerState } from "../models/ReducerState"
 export enum ActionTypes {
   INIT = 'init',
   ADD = 'add',
-  FAVORITE = 'favorite'
+  FAVORITE = 'favorite',
+  TOGGLE_INTERVAL = 'interval'
 }
 
 export interface Action {
   type: ActionTypes
-  payload: Joke
+  payload?: Joke
 }
 
 export const reducer = (state: ReducerState, action: Action): ReducerState => {
@@ -18,6 +19,8 @@ export const reducer = (state: ReducerState, action: Action): ReducerState => {
 
   switch (action.type) {
     case ActionTypes.INIT:
+      if (!action.payload) return state
+
       return state.jokes.length
         ? state
         : {
@@ -25,6 +28,8 @@ export const reducer = (state: ReducerState, action: Action): ReducerState => {
           jokes: [action.payload]
         }
     case ActionTypes.ADD: {
+      if (!action.payload) return state
+
       const jokes = state.jokes.length === MAX_JOKES
         // Remove last joke to keep the list up to the max
         ? [action.payload, ...state.jokes.slice(0, MAX_JOKES - 1)]
@@ -36,14 +41,16 @@ export const reducer = (state: ReducerState, action: Action): ReducerState => {
       }
     }
     case ActionTypes.FAVORITE: {
+      if (!action.payload) return state
+
       const updatedJoke = {
         ...action.payload,
-        isFavorite: !action.payload.isFavorite
+        isFavorite: !action.payload?.isFavorite
       }
 
       // Update joke in the jokes list
       const updatedJokes = state.jokes.map(joke => {
-        if (joke.id === action.payload.id) {
+        if (joke.id === action.payload?.id) {
           return updatedJoke
         }
 
@@ -71,6 +78,11 @@ export const reducer = (state: ReducerState, action: Action): ReducerState => {
         favorites: updatedFavorites
       }
     }
+    case ActionTypes.TOGGLE_INTERVAL:
+      return {
+        ...state,
+        intervalEnabled: !state.intervalEnabled
+      }
     default:
       return state
   }

@@ -21,12 +21,14 @@ const JokesProvider = ({ children }: JokesProviderProps) => {
 
   const [state, dispatch] = useReducer(reducer, {
     favorites: favorites,
-    jokes: []
+    jokes: [],
+    intervalEnabled: false
   })
 
   const jokesState: JokesState = {
     jokes: state.jokes,
     favorites: state.favorites,
+    intervalEnabled: state.intervalEnabled,
     dispatch: dispatch
   }
 
