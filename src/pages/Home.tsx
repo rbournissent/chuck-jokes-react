@@ -69,7 +69,7 @@ const Home = () => {
             ? `A new joke arrives in ${countdown} seconds...`
             : 'Resume to get a new joke every 5 seconds'
           }</i>
-          <button style={{ marginLeft: '10px' }}
+          <button className="ml-2"
             onClick={toggleInterval}>
             { intervalEnabled ? 'Pause' : 'Resume' }
           </button>
